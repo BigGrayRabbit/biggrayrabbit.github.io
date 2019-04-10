@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.7.2/lib/theme-chalk/index.css" integrity="sha256-n7CuXghg6+uwmQsoQOds1HaIffV3byRPlS7vwO+A0UU=" crossorigin="anonymous">
+
+<div id="pb">
+  <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage"></el-progress>
+  <el-timeline :reverse="true" style="margin-top: 18px;">
+    <el-timeline-item
+      v-for="step in steps"
+      :key="step.id"
+      :type="step.type"
+      :timestamp="step.timestamp">
+      {{step.content}} / {{step.period}} min
+    </el-timeline-item>
+  </el-timeline>
+</div>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js" integrity="sha256-ufGElb3TnOtzl5E4c/qQnZFGP+FYEZj5kbSEdJNrw0A=" crossorigin="anonymous"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js" integrity="sha256-chlNFSVx3TdcQ2Xlw7SvnbLAavAQLO0Y/LBiWX04viY=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/element-ui@2.7.2/lib/index.js" integrity="sha256-V8TybCz6Jz3rNbqwbexqOCEAW2re0CdcEeghgGWFxuk=" crossorigin="anonymous"></script>
+
+<script>
+var app = new Vue({
+  el: '#pb',
+  data() {
+    return {
+      steps: [
+        { id: 0, timestamp: '2019-04-09 19:00', content: '省考公告发布，在19课堂看中公的解读直播', period: 100, type: 'primary' },
+      ],
+      target: 6000
+    }
+  },
+  computed: {
+    percentage() {
+      let exp = 0
+      this.steps.forEach(s => {
+        exp += s.period
+      })
+      return parseFloat(((exp / this.target) * 100).toFixed(2))
+    }
+  }
+})
+</script>
+
