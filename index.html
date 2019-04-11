@@ -1,16 +1,32 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.7.2/lib/theme-chalk/index.css" integrity="sha256-n7CuXghg6+uwmQsoQOds1HaIffV3byRPlS7vwO+A0UU=" crossorigin="anonymous">
 
 <div id="pb">
-  <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage"></el-progress>
-  <el-timeline :reverse="true" style="margin-top: 18px;">
-    <el-timeline-item
-      v-for="step in steps"
-      :key="step.id"
-      :type="step.type"
-      :timestamp="step.timestamp">
-      {{step.content}} / {{step.period}} min
-    </el-timeline-item>
-  </el-timeline>
+  <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage" color="#409EFF"></el-progress>
+  <el-progress :text-inside="true" :stroke-width="18" :percentage="season2moneyProgress" color="#8e71c7" style="margin-top: 10px;"></el-progress>
+
+  <div style="display: flex; margin-top: 18px;">
+    <el-timeline :reverse="true">
+      <el-timeline-item
+        v-for="step in steps"
+        :key="step.id"
+        color="#409EFF"
+        :timestamp="step.timestamp">
+        {{step.content}} / {{step.period}} min
+      </el-timeline-item>
+    </el-timeline>
+
+    <el-timeline :reverse="true">
+      <el-timeline-item
+        v-for="m in season2money"
+        :key="m.id"
+        color="#8e71c7"
+        :timestamp="m.timestamp">
+        【{{m.content}}】 ({{ m.sellAt }} - {{ m.buyAt }}) * {{ m.quant }} * 0.95 = {{ parseInt((m.sellAt - m.buyAt) * m.quant * 0.95) }}
+      </el-timeline-item>
+    </el-timeline>
+  </div>
+
+
 </div>
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js" integrity="sha256-ufGElb3TnOtzl5E4c/qQnZFGP+FYEZj5kbSEdJNrw0A=" crossorigin="anonymous"></script> -->
@@ -23,9 +39,13 @@ var app = new Vue({
   data() {
     return {
       steps: [
-        { id: 0, timestamp: '2019-04-09 19:00', content: '省考公告发布，在19课堂看中公的解读直播', period: 100, type: 'primary' },
+        { id: 0, timestamp: '2019-04-09 19:00', content: '省考公告发布，在19课堂看中公的解读直播', period: 100 },
       ],
-      target: 6000
+      target: 6000,
+      season2money: [
+        { id: 0, timestamp: '2019-04-08', content: '601211', buyAt: 19.4, sellAt: 20.53, quant: 4300 },
+      ],
+      season2moneyTarget: 30000,
     }
   },
   computed: {
@@ -35,6 +55,13 @@ var app = new Vue({
         exp += s.period
       })
       return parseFloat(((exp / this.target) * 100).toFixed(2))
+    },
+    season2moneyProgress() {
+      let exp = 0
+      this.season2money.forEach(m => {
+        exp += (m.sellAt - m.buyAt) * m.quant * 0.95 // 扣5%算作摩擦费
+      })
+      return parseFloat(((exp / this.season2moneyTarget) * 100).toFixed(2))
     }
   }
 })
