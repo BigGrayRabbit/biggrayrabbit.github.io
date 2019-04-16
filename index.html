@@ -1,8 +1,14 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.7.2/lib/theme-chalk/index.css" integrity="sha256-n7CuXghg6+uwmQsoQOds1HaIffV3byRPlS7vwO+A0UU=" crossorigin="anonymous">
 
 <div id="pb">
-  <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage" color="#409EFF"></el-progress>
-  <el-progress :text-inside="true" :stroke-width="18" :percentage="season2moneyProgress" color="#8e71c7" style="margin-top: 10px;"></el-progress>
+  <div class="row">
+    <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage" color="#409EFF"></el-progress>
+    <div class="count"> {{ exp }} / {{ target }}</div>
+  </div>
+  <div class="row">
+    <el-progress :text-inside="true" :stroke-width="18" :percentage="season2moneyProgress" color="#8e71c7"></el-progress>
+    <div class="count"> {{ parseInt(season2moneyExp) }} / {{ season2moneyTarget }}</div>
+  </div>
 
   <div style="display: flex; margin-top: 18px;">
     <el-timeline :reverse="true">
@@ -54,12 +60,26 @@ var app = new Vue({
     }
   },
   computed: {
+    exp() {
+      let exp = 0
+      this.steps.forEach(s => {
+        exp += s.period
+      })
+      return exp
+    },
     percentage() {
       let exp = 0
       this.steps.forEach(s => {
         exp += s.period
       })
       return parseFloat(((exp / this.target) * 100).toFixed(2))
+    },
+    season2moneyExp() {
+      let exp = 0
+      this.season2money.forEach(m => {
+        exp += (m.sellAt - m.buyAt) * m.quant * 0.95 // 扣5%算作摩擦费
+      })
+      return exp
     },
     season2moneyProgress() {
       let exp = 0
@@ -72,3 +92,18 @@ var app = new Vue({
 })
 </script>
 
+<style>
+  .row {
+    display: flex;
+  }
+  .row+.row {
+    margin-top: 10px;
+  }
+  .el-progress {
+    width: 100%;
+  }
+  .count {
+    min-width: 130px;
+    text-align: right;
+  }
+</style>
