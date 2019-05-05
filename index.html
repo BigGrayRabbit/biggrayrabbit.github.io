@@ -6,12 +6,16 @@
     <div class="count"> {{ exp }} / {{ target }}</div>
   </div>
   <div class="row">
+    <el-progress :text-inside="true" :stroke-width="18" :percentage="year2019season2expoundingPercentage" :color="year2019.season2.expounding.color"></el-progress>
+    <div class="count"> {{ parseInt(year2019season2expoundingSum) }} / {{ year2019.season2.expounding.target }}</div>
+  </div>
+  <div class="row">
     <el-progress :text-inside="true" :stroke-width="18" :percentage="season2moneyProgress" color="#8e71c7"></el-progress>
     <div class="count"> {{ parseInt(season2moneyExp) }} / {{ season2moneyTarget }}</div>
   </div>
 
   <div class="row no-flex-wrap">
-    <el-scrollbar class="memo" :style="elScrollbarColorStyle('409EFF')">
+    <el-scrollbar class="memo" :style="elScrollbarColorStyle('#409EFF')">
       <el-timeline :reverse="true">
         <el-timeline-item
           v-for="step in steps"
@@ -23,7 +27,19 @@
       </el-timeline>
     </el-scrollbar>
 
-    <el-scrollbar class="memo" :style="elScrollbarColorStyle('8e71c7')">
+    <el-scrollbar class="memo" :style="elScrollbarColorStyle(year2019.season2.expounding.color)">
+      <el-timeline :reverse="true">
+        <el-timeline-item
+          v-for="step in year2019.season2.expounding.steps"
+          :key="step.id"
+          :color="year2019.season2.expounding.color"
+          :timestamp="step.timestamp">
+          {{step.content}} / {{step.period}} min
+        </el-timeline-item>
+      </el-timeline>
+    </el-scrollbar>
+
+    <el-scrollbar class="memo" :style="elScrollbarColorStyle('#8e71c7')">
       <el-timeline :reverse="true">
         <el-timeline-item
           v-for="m in season2money"
@@ -43,10 +59,34 @@
 <script src="https://cdn.jsdelivr.net/npm/element-ui@2.7.2/lib/index.js" integrity="sha256-V8TybCz6Jz3rNbqwbexqOCEAW2re0CdcEeghgGWFxuk=" crossorigin="anonymous"></script>
 
 <script>
+/* project.steps.content: code description
+  S: stock
+
+*/
+
+// todo: 组件化progressbar和timeline
+
+// todo: 模块化 - babel, browserify
+
+// todo: 打包发布的自走脚本
+
+// todo: webpack构建？
+
 var app = new Vue({
   el: '#pb',
   data() {
     return {
+      year2019: {
+        season2: {
+          expounding: {
+            color: '#13ce66',
+            target: 2400,
+            steps: [
+              { id: 0, timestamp: '2019-05-05 21:00', content: '导读PDF，抄1题(200字)', period: 120 },
+            ],
+          }
+        }
+      },
       steps: [
         { id: 0, timestamp: '2019-04-09 19:00', content: '省考公告发布，在19课堂看中公的解读直播', period: 100 },
         { id: 1, timestamp: '2019-04-11 21:30', content: '粉笔-行测', period: 90 },
@@ -82,15 +122,22 @@ var app = new Vue({
         { id: 31, timestamp: '2019-05-04 14:30', content: '粉笔15年浙江-对65道答案', period: 60 },
         { id: 32, timestamp: '2019-05-04 16:00', content: '粉笔-快速15题', period: 40 },
         { id: 33, timestamp: '2019-05-04 16:00', content: '欧阳-言语-2集', period: 140 },
+        { id: 33, timestamp: '2019-05-05 19:40', content: '欧阳-言语-1集', period: 40 },
       ],
       target: 6000,
       season2money: [
-        { id: 0, timestamp: '2019-04-08', content: '601211', buyAt: 19.4, sellAt: 20.53, quant: 4300 },
+        { id: 0, timestamp: '2019-04-08', content: 'S:601211', buyAt: 19.4, sellAt: 20.53, quant: 4300 },
       ],
       season2moneyTarget: 30000,
     }
   },
   computed: {
+    year2019season2expoundingSum() {
+      return this.calcPeriodSum(this.year2019.season2.expounding)
+    },
+    year2019season2expoundingPercentage() {
+      return this.calcPeriodPercentage(this.year2019.season2.expounding)
+    },
     exp() {
       let exp = 0
       this.steps.forEach(s => {
@@ -121,12 +168,24 @@ var app = new Vue({
     }
   },
   methods: {
-    elScrollbarColorStyle(mainColor) {
+    elScrollbarColorStyle(color) {
       return {
-        'border': `1px solid #${mainColor}`,
-        'border-right': `10px solid #${mainColor}01`,
-        'background-color': `#${mainColor}22`
+        'border': `1px solid ${color}`,
+        'border-right': `10px solid ${color}00`,
+        'background-color': `${color}22`
       }
+    },
+    calcPeriodSum(project) {
+      let sum = 0
+      project.steps.forEach(s => {
+        sum += s.period
+      })
+      return sum
+    },
+    calcPeriodPercentage(project) {
+      let sum = this.calcPeriodSum(project)
+      let tar = project.target
+      return parseFloat(((sum / tar) * 100).toFixed(2))
     }
   }
 })
