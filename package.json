@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "element-ui": "2.8.2",
+    "vue": "2.6.10"
+  },
+  "devDependencies": {
+    "css-loader": "^2.1.1",
+    "file-loader": "^3.0.1",
+    "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.2"
+  }
+}
