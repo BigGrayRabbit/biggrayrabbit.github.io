@@ -89,7 +89,7 @@ var MemoBoard = {
       if (step.period) {
         return `${step.content} / ${step.period} min`
       } else if (step.buyAt) {
-        return `【${step.content}}】 (${step.sellAt} - ${step.buyAt}) * ${step.quant} * 0.95 = ${parseInt((step.sellAt - step.buyAt) * step.quant * 0.95)}`
+        return `【${step.content}】 (${step.sellAt} - ${step.buyAt}) * ${step.quant} * 0.95 = ${parseInt((step.sellAt - step.buyAt) * step.quant * 0.95)}`
       }
     }
   }
@@ -119,7 +119,9 @@ var app = new Vue({
               { id: 4, timestamp: '2019-05-10 23:55', content: '看<寻梦环游记>...', period: -1 },
               { id: 5, timestamp: '2019-05-12 20:30', content: '第1.2-社会心理缺失', period: 70 },
               { id: 6, timestamp: '2019-05-13 23:00', content: '第1.3-pre-大事记归类总结', period: 20 },
-              { id: 7, timestamp: '2019-05-13 22:30', content: '第1.3-pre-大事记归类总结-第2遍', period: 20 },
+              { id: 7, timestamp: '2019-05-14 22:30', content: '第1.3-pre-大事记归类总结-第2遍', period: 20 },
+              { id: 8, timestamp: '2019-05-15 20:15', content: '第1.3-第2遍(下午做过)', period: 40 },
+              { id: 9, timestamp: '2019-05-15 22:00', content: '第1.4-第1遍', period: 30 },
             ],
           },
           aptitude: {
@@ -174,6 +176,7 @@ var app = new Vue({
               { id: 45, timestamp: '2019-05-13 21:00', content: '粉笔-行测-语言', period: 20 },
               { id: 46, timestamp: '2019-05-13 20:30', content: '韩菲-推断-2集', period: 60 },
               { id: 47, timestamp: '2019-05-14 20:00', content: '推断3集-过完剩余的', period: 120 },
+              { id: 48, timestamp: '2019-05-15 22:50', content: '粉笔-常识', period: 20 },
             ],
           },
           money: {
