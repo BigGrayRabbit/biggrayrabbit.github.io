@@ -1,15 +1,23 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.7.2/lib/theme-chalk/index.css" integrity="sha256-n7CuXghg6+uwmQsoQOds1HaIffV3byRPlS7vwO+A0UU=" crossorigin="anonymous">
 
 <div id="pb">
-  <progress-bar :project='year2019.season2.aptitude'></progress-bar>
-  <progress-bar :project='year2019.season2.expounding'></progress-bar>
-  <progress-bar :project='year2019.season2.money'></progress-bar>
-
-  <div class="row no-flex-wrap">
-    <memo-board :project="year2019.season2.aptitude"></memo-board>
-    <memo-board :project="year2019.season2.expounding"></memo-board>
-    <memo-board :project="year2019.season2.money"></memo-board>
+  <progress-bar v-for="project in year2019.season2" :project='project'></progress-bar>
+  <div class="row">
+    <el-button v-for="(project,idx) in year2019.season2" size="mini" type="info" plain @click="check('season2', idx)">{{ project.name}}</el-button>
   </div>
+  <div class="memos">
+    <el-carousel ref="season2" :autoplay="false" height="70%">
+      <el-carousel-item v-for="project in year2019.season2"><memo-board :project="project"></memo-board></el-carousel-item>
+    </el-carousel>
+  </div>
+
 </div>
 
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js" integrity="sha256-ufGElb3TnOtzl5E4c/qQnZFGP+FYEZj5kbSEdJNrw0A=" crossorigin="anonymous"></script> -->
@@ -26,7 +34,7 @@ var ProgressBar = {
   template: `
     <div class="row">
       <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage" :color="project.color"></el-progress>
-      <div class="count"> {{ sum }} / {{ project.target }}</div>
+      <div class="count">{{ sum }} / {{ project.target }}</div>
     </div>
   `,
   props: ['project'],
@@ -95,20 +103,15 @@ var MemoBoard = {
   }
 }
 
-// todo: 模块化 - babel, browserify
-
-// todo: 打包发布的自走脚本
-
-// todo: webpack构建？
-
 var app = new Vue({
   el: '#pb',
   components: { ProgressBar, MemoBoard },
   data() {
     return {
       year2019: {
-        season2: {
-          expounding: {
+        season2: [
+          {
+            name: 'expounding',
             color: '#13ce66',
             target: 2400,
             steps: [
@@ -126,8 +129,8 @@ var app = new Vue({
               { id: 11, timestamp: '2019-05-17 23:40', content: '第1.4-听完', period: 20 },
               { id: 12, timestamp: '2019-05-18 09:00', content: '第1.5-写完听完', period: 120 },
             ],
-          },
-          aptitude: {
+          }, {
+            name: 'aptitude',
             color: '#409EFF',
             target: 6000,
             steps: [
@@ -180,19 +183,25 @@ var app = new Vue({
               { id: 46, timestamp: '2019-05-13 20:30', content: '韩菲-推断-2集', period: 60 },
               { id: 47, timestamp: '2019-05-14 20:00', content: '推断3集-过完剩余的', period: 120 },
               { id: 48, timestamp: '2019-05-15 22:50', content: '粉笔-常识', period: 20 },
+              { id: 49, timestamp: '2019-05-18 14:30', content: '18年省考-数学不做', period: 90 },
             ],
-          },
-          money: {
+          }, {
+            name: 'money',
             color: '#8e71c7',
             target: 30000,
             steps: [
               { id: 0, timestamp: '2019-04-08', content: 'S:601211', buyAt: 19.4, sellAt: 20.53, quant: 4300 },
             ]
           }
-        }
+        ]
       },
     }
   },
+  methods: {
+    check(stage, idx) {
+      this.$refs[stage].setActiveItem(idx)
+    }
+  }
 })
 </script>
 
@@ -200,15 +209,11 @@ var app = new Vue({
   .row {
     display: flex;
   }
-  .row.no-flex-wrap {
-    flex-wrap: wrap;
-  }
   .row+.row {
     margin-top: 7px;
   }
-  .row .memo{
-    margin: 3px 5px 0 5px;
-    height: calc((100vh - 200px) / 2);
+  .memos {
+    padding-top: 7px;
   }
   .el-progress {
     width: 100%;
