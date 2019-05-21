@@ -3,17 +3,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.7.2/lib/theme-chalk/index.css" integrity="sha256-n7CuXghg6+uwmQsoQOds1HaIffV3byRPlS7vwO+A0UU=" crossorigin="anonymous">
 </head>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.7.2/lib/theme-chalk/index.css" integrity="sha256-n7CuXghg6+uwmQsoQOds1HaIffV3byRPlS7vwO+A0UU=" crossorigin="anonymous">
-
 <div id="pb">
-  <progress-bar v-for="project in year2019.season2" :project='project'></progress-bar>
-  <div class="row">
-    <el-button v-for="(project,idx) in year2019.season2" size="mini" type="info" plain @click="check('season2', idx)">{{ project.name}}</el-button>
-  </div>
-  <div class="memos">
-    <el-carousel ref="season2" :autoplay="false" height="70%">
+  <div class="row" v-for="project in year2019.season2"><progress-bar :project='project'></progress-bar></div>
+  <div class="row"><el-button v-for="(project,idx) in year2019.season2" size="mini" type="info" plain @click="check('year2019.season2', idx)">{{ project.name}}</el-button></div>
+  <div class="row memos">
+    <el-carousel ref="year2019.season2" :autoplay="false" height="70%">
       <el-carousel-item v-for="project in year2019.season2"><memo-board :project="project"></memo-board></el-carousel-item>
     </el-carousel>
   </div>
@@ -32,7 +29,7 @@
 
 var ProgressBar = {
   template: `
-    <div class="row">
+    <div class="one-bar">
       <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage" :color="project.color"></el-progress>
       <div class="count">{{ sum }} / {{ project.target }}</div>
     </div>
@@ -97,7 +94,7 @@ var MemoBoard = {
       if (step.period) {
         return `${step.content} / ${step.period} min`
       } else if (step.buyAt) {
-        return `【${step.content}】 (${step.sellAt} - ${step.buyAt}) * ${step.quant} * 0.95 = ${parseInt((step.sellAt - step.buyAt) * step.quant * 0.95)}`
+        return `[${step.content}] (${step.sellAt} - ${step.buyAt}) * ${step.quant} * 0.95 = ${parseInt((step.sellAt - step.buyAt) * step.quant * 0.95)}`
       }
     }
   }
@@ -206,16 +203,16 @@ var app = new Vue({
 </script>
 
 <style>
-  .row {
+  .row, .one-bar {
     display: flex;
   }
   .row+.row {
     margin-top: 7px;
   }
   .memos {
-    padding-top: 7px;
+    display: block;
   }
-  .el-progress {
+  .one-bar, .el-progress {
     width: 100%;
   }
   .el-timeline {
