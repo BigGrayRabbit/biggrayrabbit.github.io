@@ -7,6 +7,16 @@
 </head>
 
 <div id="pb">
+  <div class="row">2019年第2季度（续）</div>
+  <div class="row" v-for="project in year2019.season2_second"><progress-bar :project='project'></progress-bar></div>
+  <div class="row"><el-button v-for="(project,idx) in year2019.season2_second" size="mini" type="info" plain @click="check('year2019.season2_second', idx)">{{ project.name}}</el-button></div>
+  <div class="row memos">
+    <el-carousel ref="year2019.season2_second" :autoplay="false" height="70%">
+      <el-carousel-item v-for="project in year2019.season2_second"><memo-board :project="project"></memo-board></el-carousel-item>
+    </el-carousel>
+  </div>
+
+  <div class="row">2019年第2季度</div>
   <div class="row" v-for="project in year2019.season2"><progress-bar :project='project'></progress-bar></div>
   <div class="row"><el-button v-for="(project,idx) in year2019.season2" size="mini" type="info" plain @click="check('year2019.season2', idx)">{{ project.name}}</el-button></div>
   <div class="row memos">
@@ -190,6 +200,37 @@ var app = new Vue({
               { id: 0, timestamp: '2019-04-08', content: 'S:601211', buyAt: 19.4, sellAt: 20.53, quant: 4300 },
             ]
           }
+        ],
+        season2_second: [
+          {
+            name: 'sketchUp',
+            color: '#E72B2D',
+            target: 600, // 10h
+            steps: [
+              { id: 0, timestamp: '2019-05-24 19:00', content: 'filler', period: 1 },
+            ],
+          }, {
+            name: 'gold',
+            color: '#FFCD00',
+            target: 2700, // 45h
+            steps: [
+              { id: 0, timestamp: '2019-05-24 19:00', content: 'filler', period: 1 },
+            ],
+          }, {
+            name: 'lesson',
+            color: '#7DBB95',
+            target: 180, // 3*4*15，共3集，每集4小节，每小节15分钟
+            steps: [
+              { id: 0, timestamp: '2019-05-24 19:00', content: 'filler', period: 1 },
+            ],
+          }, {
+            name: 'sound',
+            color: '#F45A8D',
+            target: 1500, // 25h
+            steps: [
+              { id: 0, timestamp: '2019-05-24 19:00', content: 'filler', period: 1 },
+            ],
+          },
         ]
       },
     }
