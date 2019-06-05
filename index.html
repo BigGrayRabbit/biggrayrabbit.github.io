@@ -134,10 +134,14 @@ var app = new Vue({
           }, {
             name: 'lesson',
             color: '#7DBB95',
-            target: (3*4*15 + 27*(40+50)), // 3*4*15，共3集，每集4小节，每小节15分钟; 6月3日改的，第2季度还有27天，平均每天早40、晚50
+            target: (3*4*15 + (27-2)*(40+50)), // 3*4*15，共3集，每集4小节，每小节15分钟; 6月3日改的，第2季度还有27天，平均每天早40、晚50
             steps: [
               { id: 0, timestamp: '2019-05-29 20:50', content: '副三和弦，以马内利', period: 30 },
               { id: 1, timestamp: '2019-05-30 20:55', content: '和弦外音，G大调正三和弦', period: 30 },
+              { id: 2, timestamp: '2019-06-03 23:29', content: '晚课', period: 25 },
+              { id: 3, timestamp: '2019-06-04 07:07', content: '早课', period: 50 },
+              { id: 4, timestamp: '2019-06-04 22:50', content: '晚课', period: 30 },
+              { id: 5, timestamp: '2019-06-05 07:15', content: '早课', period: 50 },
             ],
           }, {
             name: 'gold',
@@ -172,11 +176,12 @@ var app = new Vue({
           }, {
             name: 'sketchUp',
             color: '#E72B2D',
-            target: 600, // 10h
+            target: 1200, // 20h
             steps: [
               { id: 0, timestamp: '2019-05-29 19:10', content: '制mm为单位的房型线图(AutoCAD)', period: 20 },
               { id: 1, timestamp: '2019-06-01 13:00', content: '实地测绘', period: 120 },
               { id: 2, timestamp: '2019-06-02 21:30', content: '开始设计', period: 360 },
+              { id: 3, timestamp: '2019-06-05 18:00', content: '遍历尚品宅配公众号推文', period: 120 },
             ],
           }, {
             name: 'aptitude',
