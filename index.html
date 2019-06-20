@@ -62,7 +62,7 @@ var ProgressBar = {
         })
       } else if (project.steps[0].buyAt) {
         project.steps.forEach(m => {
-          sum += (m.sellAt - m.buyAt) * m.quant * 0.95 // 扣5%算作摩擦费
+          sum += (m.sellAt - m.buyAt) * m.quant * 0.95 - 10 // 扣(5% + 10)算作摩擦损耗，如佣金、过户费、印花税等
         })
         sum = parseInt(sum)
       }
@@ -104,7 +104,7 @@ var MemoBoard = {
       if (step.period) {
         return `${step.content} / ${step.period} min`
       } else if (step.buyAt) {
-        return `[${step.content}] (${step.sellAt} - ${step.buyAt}) * ${step.quant} * 0.95 = ${parseInt((step.sellAt - step.buyAt) * step.quant * 0.95)}`
+        return `[${step.content}] (${step.sellAt} - ${step.buyAt}) * ${step.quant} * 0.95 - 10 = ${parseInt((step.sellAt - step.buyAt) * step.quant * 0.95) - 10}`
       }
     }
   }
@@ -124,6 +124,8 @@ var app = new Vue({
             steps: [
               { id: 0, timestamp: '2019-04-08', content: 'S:601211', buyAt: 19.4, sellAt: 20.53, quant: 4300 },
               { id: 1, timestamp: '2019-06-12', content: 'S:603993', buyAt: 4, sellAt: 4.12, quant: 1000 },
+              { id: 2, timestamp: '2019-06-20', content: 'S:601818', buyAt: 3.92, sellAt: 4.03, quant: 1000 },
+              { id: 3, timestamp: '2019-06-20', content: 'S:601169', buyAt: 5.86, sellAt: 5.98, quant: 1300 },
             ]
           }, {
             name: 'interview', // 面试准备
