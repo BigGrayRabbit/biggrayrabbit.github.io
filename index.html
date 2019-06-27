@@ -7,6 +7,15 @@
 </head>
 
 <div id="pb">
+  <div class="row">2019年第3季-度</div>
+  <div class="row" v-for="project in year2019.season3"><progress-bar :project='project'></progress-bar></div>
+  <div class="row"><el-button v-for="(project,idx) in year2019.season3" size="mini" type="info" plain @click="check('year2019.season3', idx)">{{ project.name}}</el-button></div>
+  <div class="row memos">
+    <el-carousel ref="year2019.season3" :autoplay="false" height="70%">
+      <el-carousel-item v-for="project in year2019.season3"><memo-board :project="project"></memo-board></el-carousel-item>
+    </el-carousel>
+  </div>
+
   <div class="row">2019年第2季-度</div>
   <div class="row" v-for="project in year2019.season2"><progress-bar :project='project'></progress-bar></div>
   <div class="row"><el-button v-for="(project,idx) in year2019.season2" size="mini" type="info" plain @click="check('year2019.season2', idx)">{{ project.name}}</el-button></div>
@@ -56,7 +65,11 @@ var ProgressBar = {
   methods: {
     calcSum(project) {
       let sum = 0
-      if (project.steps[0].period) {
+      if (project.steps[0].point) {
+        project.steps.forEach(s => {
+          sum += s.point
+        })
+      } else if (project.steps[0].period) {
         project.steps.forEach(s => {
           sum += s.period
         })
@@ -103,6 +116,8 @@ var MemoBoard = {
     content(step) {
       if (step.period) {
         return `${step.content} / ${step.period} min`
+      }else if(step.point) {
+        return `${step.content} / ${step.point} pts`
       } else if (step.buyAt) {
         return `[${step.content}] (${step.sellAt} - ${step.buyAt}) * ${step.quant} * 0.95 - 10 = ${parseInt((step.sellAt - step.buyAt) * step.quant * 0.95) - 10}`
       }
@@ -116,6 +131,16 @@ var app = new Vue({
   data() {
     return {
       year2019: {
+        season3: [
+          {
+            name: 'boogie',
+            color: '#3FBFCC',
+            target: 24, // 24 lessons, how to play amazing boogie woogie
+            steps: [
+              { id: 0, timestamp: '2019-06-26 20:50', content: 'lesson 1,2 - left hand stomp', point: 2 },
+            ],
+          }
+        ],
         season2: [
           {
             name: 'money',
@@ -165,6 +190,8 @@ var app = new Vue({
               { id: 22, timestamp: '2019-06-24 07:20', content: '早课', period: 40 },
               { id: 23, timestamp: '2019-06-24 20:45', content: '晚课(虚)', period: 120 },
               { id: 24, timestamp: '2019-06-25 07:15', content: '早课', period: 45 },
+              { id: 25, timestamp: '2019-06-25 22:06', content: '晚课', period: 50 },
+              { id: 26, timestamp: '2019-06-26 22:00', content: '晚课(跑偏：boogie woogie)', period: 60 },
             ],
           }, {
             name: 'gold',
@@ -313,6 +340,23 @@ var app = new Vue({
     overflow-x: hidden;
   }
 </style>
+
+<!--
+  When I do count the clock that tells the time,
+  And see the brave day sunk in hideous night;
+  When I behold the violet past prime,
+  And sable curls all silvered o'er with white;
+  When lofty trees I see barren of leaves,
+  Which erst from heat did canopy the herd,
+  And summer's green, all girded up in sheaves,
+  Borne on the bier with white and bristly beard;
+  Then of thy beauty do I question make,
+  That thou among the wastes of time must go,
+  Since sweets and beauties do themselves forsake,
+  And die as fast as they see others grow,
+  And nothing 'gainst Time's scythe can make defense,
+  Save breed, to brave him when he takes thee hence.
+-->
 
 <!--
   Shall I compare thee to a summer's day?
