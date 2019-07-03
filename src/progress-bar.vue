@@ -1,7 +1,7 @@
 <template>
-  <div class="row">
+  <div class="one-bar">
     <el-progress :text-inside="true" :stroke-width="18" :percentage="percentage" :color="project.color"></el-progress>
-    <div class="count"> {{ sum }} / {{ project.target }}</div>
+    <div class="count">{{ sum }} / {{ project.target }}</div>
   </div>
 </template>
 
@@ -20,13 +20,17 @@ export default {
   methods: {
     calcSum(project) {
       let sum = 0
-      if (project.steps[0].period) {
+      if (project.steps[0].point) {
+        project.steps.forEach(s => {
+          sum += s.point
+        })
+      } else if (project.steps[0].period) {
         project.steps.forEach(s => {
           sum += s.period
         })
       } else if (project.steps[0].buyAt) {
         project.steps.forEach(m => {
-          sum += (m.sellAt - m.buyAt) * m.quant * 0.95 // 扣5%算作摩擦费
+          sum += (m.sellAt - m.buyAt) * m.quant * 0.95 - 10 // 扣(5% + 10)算作摩擦损耗，如佣金、过户费、印花税等
         })
         sum = parseInt(sum)
       }

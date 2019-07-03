@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build": "webpack"
+  },
   "dependencies": {
     "element-ui": "2.8.2",
     "vue": "2.6.10"

@@ -28,8 +28,10 @@ export default {
     content(step) {
       if (step.period) {
         return `${step.content} / ${step.period} min`
+      }else if(step.point) {
+        return `${step.content} / ${step.point} pts`
       } else if (step.buyAt) {
-        return `【${step.content}}】 (${step.sellAt} - ${step.buyAt}) * ${step.quant} * 0.95 = ${parseInt((step.sellAt - step.buyAt) * step.quant * 0.95)}`
+        return `[${step.content}] (${step.sellAt} - ${step.buyAt}) * ${step.quant} * 0.95 - 10 = ${parseInt((step.sellAt - step.buyAt) * step.quant * 0.95) - 10}`
       }
     }
   }
