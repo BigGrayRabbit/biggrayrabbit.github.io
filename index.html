@@ -1,14 +1,101 @@
-<h2 style="text-align: center;margin-top: 15%;">
-  <a href="https://littlewhitewolf.github.io">回头是岸</a>
-</h2>
-<style>
-  a {
-    text-decoration: none;
-    /*color: #E2EBF9;*/
-    color: #21A0FF;
-  }
-  a:hover {
-    color: #1964CE;
-  }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>平安S-100k/2020</title>
+    <script src="https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts-en.common.min.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts-en.common.js"></script> -->
+</head>
+<body>
+    <h1 style="display: flex; justify-content: space-around;">
+        <span title="比年初增益">0%</span>
+        <span title="完成进度">10.00513%</span>
+    </h1><!--每月底比1月初的总增益率/每月底离目标10w完成的百分比进度-->
+    <div id="line1" style="width: 100%; height: calc(30vh); min-height: 180px;"></div>
+    <div id="bar" style="width: 100%; height: calc(30vh); min-height: 180px;"></div>
+    <div id="line2" style="width: 100%; height: calc(30vh); min-height: 180px;"></div>
+    <script type="text/javascript">
 
-</style>
+        // todo 1.图3改为双纵轴，右为增长率；2.各图左纵轴起点不要从零开始 -----------------------------------------
+
+        // 月底总资产值
+        var line1 = echarts.init(document.getElementById('line1'))
+        var line1Option = {
+            color: ['#FF9933'],
+            title: {
+                text: 'Net'
+            },
+            tooltip: {},
+            xAxis: {
+                data: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name: '月底',
+                type: 'line',
+                data: [10.00513] // 01.07 这个是1月初值，等1月底来改
+            }]
+
+        }
+        line1.setOption(line1Option)
+
+        // 月初计从余利宝的流入
+        var bar = echarts.init(document.getElementById('bar'))
+        var barOption = {
+            color: ['#E7BCF3'],
+            title: {
+                text: 'From YLB'
+            },
+            tooltip: {},
+            xAxis: {
+                data: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name: '流入',
+                type: 'bar',
+                data: [10.00513]
+            }]
+        }
+        bar.setOption(barOption)
+
+        // 单月增益率(月底比月初)
+        var line2 = echarts.init(document.getElementById('line2'))
+        var line2Option = {
+            color: ['#9FE6B8', '#CC0033', '#FB7293'],
+            title: {
+                text: 'Growth'
+            },
+            tooltip: {},
+            legend: {
+                data:['月初', '增长率', '月底']
+            },
+            xAxis: {
+                data: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+            },
+            yAxis: {},
+            series: [{
+                name: '月初',
+                type: 'bar',
+                data: [10.00513]
+            }, {
+                name: '增长率',
+                type: 'line',
+                data: [0]
+            }, {
+                name: '月底',
+                type: 'bar',
+                data: [10.00513] // 01.07 这个是1月初值，等1月底来改
+            }]
+        }
+        line2.setOption(line2Option)
+    </script>
+</body>
+</html>
