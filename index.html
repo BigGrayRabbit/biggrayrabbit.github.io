@@ -10,16 +10,27 @@
     <!-- <script src="https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts-en.common.js"></script> -->
 </head>
 <body>
-    <h1 style="display: flex; justify-content: space-around;">
-        <span title="比年初增益">0%</span>
-        <span title="完成进度">10.00513%</span>
-    </h1><!--每月底比1月初的总增益率/每月底离目标10w完成的百分比进度-->
-    <div id="line1" style="width: 100%; height: calc(30vh); min-height: 180px;"></div>
-    <div id="bar" style="width: 100%; height: calc(30vh); min-height: 180px;"></div>
-    <div id="line2" style="width: 100%; height: calc(30vh); min-height: 180px;"></div>
+    <div style="margin-bottom: 20px;width: 100%; height: 30px; border: 1px solid #8EC9EB; position: relative;">
+        <div style="height: 100%; position: absolute; background-color: #9CDDFF; z-index: -1; width: 10.00513%;"></div>
+        <div style="display: flex;justify-content: space-between; line-height: 30px; padding: 0 3px;">
+            <span title="总进度">10.00513 %</span>
+            <span title="总增益">0 %</span><!--总资产/总投入-->
+        </div>
+    </div>
+    <div id="line1" style="width: 100%; height: calc(30vh); min-height: 240px;"></div>
+    <div id="bar" style="width: 100%; height: calc(30vh); min-height: 240px;"></div>
+    <div id="line2" style="width: 100%; height: calc(30vh); min-height: 240px;"></div>
     <script type="text/javascript">
-
-        // todo 1.图3改为双纵轴，右为增长率；2.各图左纵轴起点不要从零开始 -----------------------------------------
+        var monthX = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+        var monthHead = [10.00513]
+        var monthTail = [10.00513] // 这个数字假的，月底来改
+        var monthIn = [10.00513]
+        var monthGrowth = []
+        for (let i = 0; i < monthHead.length; i++) {
+            const rate = parseFloat(((monthTail[i]/monthHead[i]-1)*100).toFixed(3))
+            monthGrowth.push(rate)
+        }
+        // console.log(monthGrowth)
 
         // 月底总资产值
         var line1 = echarts.init(document.getElementById('line1'))
@@ -30,15 +41,20 @@
             },
             tooltip: {},
             xAxis: {
-                data: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                data: monthX
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                min: 6,
+                max: 30,
+                axisLabel: {
+                    formatter: '{value} k'
+                }
             },
             series: [{
                 name: '月底',
                 type: 'line',
-                data: [10.00513] // 01.07 这个是1月初值，等1月底来改
+                data: monthTail
             }]
 
         }
@@ -53,15 +69,20 @@
             },
             tooltip: {},
             xAxis: {
-                data: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                data: monthX
             },
             yAxis: {
-                type: 'value'
+                type: 'value',
+                min: 6,
+                max: 12,
+                axisLabel: {
+                    formatter: '{value} k'
+                }
             },
             series: [{
                 name: '流入',
                 type: 'bar',
-                data: [10.00513]
+                data: monthIn
             }]
         }
         bar.setOption(barOption)
@@ -69,30 +90,56 @@
         // 单月增益率(月底比月初)
         var line2 = echarts.init(document.getElementById('line2'))
         var line2Option = {
-            color: ['#9FE6B8', '#CC0033', '#FB7293'],
+            color: ['#9FE6B8', '#FB7293', '#8378EA'],
             title: {
                 text: 'Growth'
             },
-            tooltip: {},
+            // tooltip: {},
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross'
+                }
+            },
             legend: {
-                data:['月初', '增长率', '月底']
+                data: ['月初', '月底', '增长率']
             },
             xAxis: {
-                data: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+                data: monthX
             },
-            yAxis: {},
+            yAxis: [{
+                type: 'value',
+                min: 5,
+                max: 30,
+                position: 'left',
+                axisLabel: {
+                  formatter: '{value} k'
+                }
+              }, {
+                type: 'value',
+                min: -5,
+                max: 20,
+                position: 'right',
+                axisLabel: {
+                  formatter: '{value} %'
+                }
+              }
+            ],
             series: [{
                 name: '月初',
                 type: 'bar',
-                data: [10.00513]
-            }, {
-                name: '增长率',
-                type: 'line',
-                data: [0]
+                yAxisIndex: 0,
+                data: monthHead
             }, {
                 name: '月底',
                 type: 'bar',
-                data: [10.00513] // 01.07 这个是1月初值，等1月底来改
+                yAxisIndex: 0,
+                data: monthTail
+            }, {
+                name: '增长率',
+                type: 'line',
+                yAxisIndex: 1,
+                data: monthGrowth
             }]
         }
         line2.setOption(line2Option)
