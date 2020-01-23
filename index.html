@@ -11,10 +11,10 @@
 </head>
 <body>
     <div style="margin-bottom: 20px;width: 100%; height: 30px; border: 1px solid #8EC9EB; position: relative;">
-        <div style="height: 100%; position: absolute; background-color: #9CDDFF; z-index: -1; width: 10.00513%;"></div>
+        <div style="height: 100%; position: absolute; background-color: #9CDDFF; z-index: -1; width: 16.41779%;"></div>
         <div style="display: flex;justify-content: space-between; line-height: 30px; padding: 0 3px;">
-            <span title="总进度">10.00513 %</span>
-            <span title="总增益">0 %</span><!--总资产/总投入-->
+            <span title="总进度">16.41779 %</span>
+            <span title="总增益">-2.7 %</span><!--总资产/总投入-->
         </div>
     </div>
     <div id="line1" style="width: 100%; height: calc(30vh); min-height: 240px;"></div>
@@ -22,15 +22,15 @@
     <div id="line2" style="width: 100%; height: calc(30vh); min-height: 240px;"></div>
 
     <h4>MySQL Attendance</h4>
-    <div style="border: 1px solid #FA8919;">
-      <div style="width: 8%; height: 20px; background-color: #F18D30; padding-left: 10px;"><span>4 / 48</span></div>
+    <div style="border: 1px solid #4479a199;">
+      <div style="width: 10.4%; height: 20px; line-height: 20px; background-color: #4479a1; padding-left: 3px; color: white;"><span>5 / 48</span></div>
     </div>
 
     <script type="text/javascript">
         var monthX = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-        var monthHead = [10.00513]
-        var monthTail = [10.00513] // 这个数字假的，月底来改
-        var monthIn = [10.00513]
+        var monthHead = [10.00513, 16.41779]
+        var monthTail = [9.54867, 16.41779] // 这个数字假的，月底来改
+        var monthIn = [10.00513, 6.86912]
         var monthGrowth = []
         for (let i = 0; i < monthHead.length; i++) {
             const rate = parseFloat(((monthTail[i]/monthHead[i]-1)*100).toFixed(3))
@@ -41,7 +41,7 @@
         // 月底总资产值
         var line1 = echarts.init(document.getElementById('line1'))
         var line1Option = {
-            color: ['#FF9933'],
+            color: ['#577ceb55'],
             title: {
                 text: 'Net'
             },
@@ -96,7 +96,7 @@
         // 单月增益率(月底比月初)
         var line2 = echarts.init(document.getElementById('line2'))
         var line2Option = {
-            color: ['#9FE6B8', '#FB7293', '#8378EA'],
+            color: ['#9FE6B8', '#FB7293', '#ffd85c'],
             title: {
                 text: 'Growth'
             },
@@ -108,7 +108,7 @@
                 }
             },
             legend: {
-                data: ['月初', '月底', '增长率']
+                data: ['月初', '月底', '增益率']
             },
             xAxis: {
                 data: monthX
